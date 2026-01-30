@@ -11,7 +11,6 @@ set -ouex pipefail
 
 # this installs a package from fedora repos
 # dnf5 install -y tmux 
-dnf group install 'Pantheon Desktop' -y
 
 # LightDM installation steps
 dnf5 install -y lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings
@@ -26,6 +25,9 @@ echo "pantheon" > /var/lib/AccountsService/users/default-session
 
 # Use a COPR Example:
 #
+dnf5 copr enable decathorpe/elementary-nightly
+dnf5 group install 'pantheon desktop'
+
 # dnf5 -y copr enable ublue-os/staging
 # dnf5 -y install package
 # Disable COPRs so they don't end up enabled on the final image:
