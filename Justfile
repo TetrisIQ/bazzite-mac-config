@@ -209,6 +209,18 @@ build-raw $target_image=("localhost/" + image_name) $tag=default_tag: && (_build
 [group('Build Virtal Machine Image')]
 build-iso $target_image=("localhost/" + image_name) $tag=default_tag: && (_build-bib target_image tag "iso" "disk_config/iso.toml")
 
+# Build an ISO with Pantheon desktop configuration
+[group('Build Virtal Machine Image')]
+build-iso-pantheon $target_image=("localhost/" + image_name) $tag=default_tag: && (_build-bib target_image tag "iso" "disk_config/iso-pantheon.toml")
+
+# Build an ISO with KDE desktop configuration
+[group('Build Virtal Machine Image')]
+build-iso-kde $target_image=("localhost/" + image_name) $tag=default_tag: && (_build-bib target_image tag "iso" "disk_config/iso-kde.toml")
+
+# Build an ISO with GNOME desktop configuration
+[group('Build Virtal Machine Image')]
+build-iso-gnome $target_image=("localhost/" + image_name) $tag=default_tag: && (_build-bib target_image tag "iso" "disk_config/iso-gnome.toml")
+
 # Rebuild a QCOW2 virtual machine image
 [group('Build Virtal Machine Image')]
 rebuild-qcow2 $target_image=("localhost/" + image_name) $tag=default_tag: && (_rebuild-bib target_image tag "qcow2" "disk_config/disk.toml")
@@ -220,6 +232,18 @@ rebuild-raw $target_image=("localhost/" + image_name) $tag=default_tag: && (_reb
 # Rebuild an ISO virtual machine image
 [group('Build Virtal Machine Image')]
 rebuild-iso $target_image=("localhost/" + image_name) $tag=default_tag: && (_rebuild-bib target_image tag "iso" "disk_config/iso.toml")
+
+# Rebuild an ISO with Pantheon desktop configuration
+[group('Build Virtal Machine Image')]
+rebuild-iso-pantheon $target_image=("localhost/" + image_name) $tag=default_tag: && (_rebuild-bib target_image tag "iso" "disk_config/iso-pantheon.toml")
+
+# Rebuild an ISO with KDE desktop configuration
+[group('Build Virtal Machine Image')]
+rebuild-iso-kde $target_image=("localhost/" + image_name) $tag=default_tag: && (_rebuild-bib target_image tag "iso" "disk_config/iso-kde.toml")
+
+# Rebuild an ISO with GNOME desktop configuration
+[group('Build Virtal Machine Image')]
+rebuild-iso-gnome $target_image=("localhost/" + image_name) $tag=default_tag: && (_rebuild-bib target_image tag "iso" "disk_config/iso-gnome.toml")
 
 # Run a virtual machine with the specified image type and configuration
 _run-vm $target_image $tag $type $config:

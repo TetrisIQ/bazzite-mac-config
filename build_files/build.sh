@@ -10,7 +10,19 @@ set -ouex pipefail
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
 
 # this installs a package from fedora repos
-dnf5 install -y tmux 
+# dnf5 install -y tmux 
+dnf5 group install 'Pantheon Desktop' -y
+
+# LightDM installation steps
+dnf5 install -y lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings
+# Disable any existing display managers (GDM from Fedora default)
+systemctl disable gdm.service || true
+systemctl disable sddm.service || true
+# Enable LightDM
+systemctl enable lightdm.service
+
+# Set default session
+echo "pantheon" > /var/lib/AccountsService/users/default-session
 
 # Use a COPR Example:
 #
