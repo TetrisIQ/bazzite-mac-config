@@ -11,7 +11,7 @@ set -ouex pipefail
 
 # this installs a package from fedora repos
 # dnf5 install -y tmux 
-dnf5 group install 'Pantheon Desktop' -y
+dnf group install 'Pantheon Desktop' -y
 
 # LightDM installation steps
 dnf5 install -y lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings
