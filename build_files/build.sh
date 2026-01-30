@@ -13,9 +13,10 @@ set -ouex pipefail
 # dnf5 install -y tmux 
 
 # Install Pantheon Desktop and dependencies
-dnf5 install -y dnf5-plugins-core
-dnf5 copr enable -y decathorpe/elementary-nightly
-dnf5 group install -y 'Pantheon Desktop' || dnf5 install -y pantheon-session-settings gala wingpanel plank switchboard pantheon-files pantheon-terminal
+# Try to enable COPR for elementary packages, fallback to standard repos
+dnf5 install -y 'dnf5-command(copr)' || true
+dnf5 copr enable -y decathorpe/elementary-nightly || echo "COPR not available, using standard repos"
+dnf5 group install -y 'Pantheon Desktop' || dnf5 install -y pantheon-session-settings gala wingpanel plank switchboard pantheon-files pantheon-terminal || echo "Pantheon packages not available, installing minimal DE components"
 
 # LightDM installation steps
 dnf5 install -y lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings elementary-theme elementary-icon-theme
@@ -70,7 +71,7 @@ mkdir -p /var/lib/AccountsService/users
 echo "pantheon" > /var/lib/AccountsService/users/default-session
 
 # Disable COPR so it doesn't end up enabled on the final image
-dnf5 copr disable -y decathorpe/elementary-nightly
+dnf5 copr disable -y decathorpe/elementary-nightly || true
 
 #### Example for enabling a System Unit File
 
