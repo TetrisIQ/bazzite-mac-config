@@ -23,10 +23,10 @@ systemctl enable lightdm.service
 # Set default session
 echo "pantheon" > /var/lib/AccountsService/users/default-session
 
-# Use a COPR Example:
+# Use a COPR Example:dnf group install 'pantheon desktop'
 #
-dnf5 copr enable decathorpe/elementary-nightly
-dnf5 group install 'pantheon desktop'
+dnf copr enable decathorpe/elementary-nightly
+dnf group install 'pantheon desktop'
 
 # dnf5 -y copr enable ublue-os/staging
 # dnf5 -y install package
