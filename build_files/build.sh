@@ -12,26 +12,65 @@ set -ouex pipefail
 # this installs a package from fedora repos
 # dnf5 install -y tmux 
 
+# Install Pantheon Desktop and dependencies
+dnf5 install -y dnf5-plugins-core
+dnf5 copr enable -y decathorpe/elementary-nightly
+dnf5 group install -y 'Pantheon Desktop' || dnf5 install -y pantheon-session-settings gala wingpanel plank switchboard pantheon-files pantheon-terminal
+
 # LightDM installation steps
-dnf5 install -y lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings
+dnf5 install -y lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings elementary-theme elementary-icon-theme
 # Disable any existing display managers (GDM from Fedora default)
 systemctl disable gdm.service || true
 systemctl disable sddm.service || true
 # Enable LightDM
 systemctl enable lightdm.service
 
+### Configure LightDM
+# Create LightDM main configuration
+mkdir -p /etc/lightdm
+cat > /etc/lightdm/lightdm.conf << 'EOF'
+[Seat:*]
+greeter-session=lightdm-gtk-greeter
+user-session=pantheon
+allow-guest=false
+session-timeout=60
+EOF
+
+# Configure GTK greeter for Pantheon look
+cat > /etc/lightdm/lightdm-gtk-greeter.conf << 'EOF'
+[greeter]
+theme-name=elementary
+icon-theme-name=elementary
+cursor-theme-name=elementary
+font-name=Inter 11
+show-indicators=~host;~spacer;~clock;~power
+show-clock=true
+clock-format=%a, %b %d  %H:%M
+user-background=false
+hide-user-image=false
+active-monitor=0
+screensaver-timeout=60
+EOF
+
+# Create Pantheon session file
+mkdir -p /usr/share/xsessions
+cat > /usr/share/xsessions/pantheon.desktop << 'EOF'
+[Desktop Entry]
+Name=Pantheon
+Comment=Pantheon Desktop Environment
+Exec=io.elementary.session-settings
+TryExec=io.elementary.session-settings
+Icon=distributor-logo
+Type=XSession
+DesktopNames=Pantheon
+EOF
+
 # Set default session
+mkdir -p /var/lib/AccountsService/users
 echo "pantheon" > /var/lib/AccountsService/users/default-session
 
-# Use a COPR Example:dnf group install 'pantheon desktop'
-#
-dnf copr enable decathorpe/elementary-nightly
-dnf group install 'pantheon desktop'
-
-# dnf5 -y copr enable ublue-os/staging
-# dnf5 -y install package
-# Disable COPRs so they don't end up enabled on the final image:
-# dnf5 -y copr disable ublue-os/staging
+# Disable COPR so it doesn't end up enabled on the final image
+dnf5 copr disable -y decathorpe/elementary-nightly
 
 #### Example for enabling a System Unit File
 
