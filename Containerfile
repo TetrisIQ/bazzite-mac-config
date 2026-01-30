@@ -3,7 +3,7 @@ FROM scratch AS ctx
 COPY build_files /
 
 # Base Image
-FROM quay.io/fedora/fedora-bootc:42
+FROM quay.io/fedora/fedora-bootc:44@sha256:81b1f22248fe769e0c3a71af4e94a7985767d2aea7a1e27fe6e1220ca5fb2c09
 
 ## Other possible base images include:
 # FROM ghcr.io/ublue-os/bazzite:latest
