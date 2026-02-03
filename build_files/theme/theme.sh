@@ -1,0 +1,46 @@
+git clone https://github.com/vinceliuice/WhiteSur-gtk-theme
+git clone https://github.com/vinceliuice/WhiteSur-icon-theme
+git clone https://github.com/vinceliuice/WhiteSur-cursors
+
+# --- GNOME Shell Extensions Installation ---
+echo "Installing GNOME Shell Extensions..."
+
+# Install browser connector (for manual extension install via browser)
+if ! command -v chrome-gnome-shell >/dev/null 2>&1; then
+    echo "Installing GNOME Shell browser connector..."
+    sudo dnf install -y chrome-gnome-shell || echo "Please install chrome-gnome-shell manually."
+fi
+
+# Helper: Install gnome-shell-extension-installer if not present
+if ! command -v gnome-shell-extension-installer >/dev/null 2>&1; then
+    echo "Installing gnome-shell-extension-installer..."
+    sudo curl -o /usr/local/bin/gnome-shell-extension-installer \
+      https://raw.githubusercontent.com/brunelli/gnome-shell-extension-installer/master/gnome-shell-extension-installer && \
+      sudo chmod +x /usr/local/bin/gnome-shell-extension-installer
+fi
+
+# List of required extensions (UUIDs and names)
+EXTENSIONS=(
+  "user-theme@gnome-shell-extensions.gcampax.github.com" # User Themes
+  "compiz-windows-effect@hermes83.github.com"           # Compiz Window Effect
+  "dash-to-dock@micxgx.gmail.com"                      # Dash To Dock
+  "dynamic-panel-transparency@rockon999.github.io"     # Dynamic Panel Transparency
+  "move-clock@rmy.pobox.com"                           # Frippery Move Clock
+  "panel-osd@berend.de.schouwer.gmail.com"             # Panel OSD
+  "trayIconsReloaded@selfmade.pl"                      # Tray Icons Reloaded
+)
+
+# Install and enable each extension
+for UUID in "${EXTENSIONS[@]}"; do
+  echo "Installing $UUID..."
+  gnome-shell-extension-installer --yes "$UUID"
+  gnome-extensions enable "$UUID" || true
+done
+
+echo "All GNOME Shell extensions installed and enabled."git clone https://github.com/vinceliuice/WhiteSur-gtk-theme
+git clone https://github.com/vinceliuice/WhiteSur-icon-theme
+git clone https://github.com/vinceliuice/WhiteSur-cursors
+./WhiteSur-gtk-theme/install.sh
+./WhiteSur-icon-theme/install.sh
+./WhiteSur-gtk-theme/src/other/dash-to-dock/install.sh
+./WhiteSur-cursors/install.sh
