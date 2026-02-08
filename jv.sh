@@ -1,0 +1,1 @@
+just build-qcow2 bazzite-mac-config testing

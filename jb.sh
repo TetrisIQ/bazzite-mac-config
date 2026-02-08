@@ -1,0 +1,1 @@
+just build bazzite-mac-config testing
