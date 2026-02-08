@@ -1,6 +1,11 @@
 # Install needed packages
 
-dnf install -y sassc glib2.0
+dnf install -y sassc glib2-devel 
+
+# Ensure pipx state/cache paths exist (container builds may not have them)
+export PIPX_HOME="${PIPX_HOME:-/root/.local/share/pipx}"
+export PIPX_STATE_HOME="${PIPX_STATE_HOME:-/root/.local/state/pipx}"
+mkdir -p "${PIPX_HOME}" "${PIPX_STATE_HOME}/log"
 
 pipx install gnome-extensions-cli 
 
