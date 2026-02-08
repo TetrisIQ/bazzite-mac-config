@@ -10,7 +10,7 @@ set -ouex pipefail
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
 
 # this installs a package from fedora repos
-dnf5 install -y tmux 
+dnf5 install -y pipx 
 
 # install themes and icons
 /ctx/theme/theme.sh
@@ -21,6 +21,15 @@ dnf5 install -y tmux
 # dnf5 -y install package
 # Disable COPRs so they don't end up enabled on the final image:
 # dnf5 -y copr disable ublue-os/staging
+
+#### Create a default user for VM logins
+# NOTE: This sets a password in the image. Use only for VM testing.
+if [[ "${USER:-}" == "alex" ]]; then
+	if ! id -u bazzite >/dev/null 2>&1; then
+		useradd -m -G wheel -s /bin/bash bazzite
+	fi
+	echo "bazzite:bazzite" | chpasswd
+fi
 
 #### Example for enabling a System Unit File
 

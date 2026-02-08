@@ -1,23 +1,11 @@
-git clone https://github.com/vinceliuice/WhiteSur-gtk-theme
-git clone https://github.com/vinceliuice/WhiteSur-icon-theme
-git clone https://github.com/vinceliuice/WhiteSur-cursors
+# Install needed packages
+
+dnf install -y sassc glib2.0
+
+pipx install gnome-extensions-cli 
 
 # --- GNOME Shell Extensions Installation ---
 echo "Installing GNOME Shell Extensions..."
-
-# Install browser connector (for manual extension install via browser)
-if ! command -v chrome-gnome-shell >/dev/null 2>&1; then
-    echo "Installing GNOME Shell browser connector..."
-    sudo dnf install -y chrome-gnome-shell || echo "Please install chrome-gnome-shell manually."
-fi
-
-# Helper: Install gnome-shell-extension-installer if not present
-if ! command -v gnome-shell-extension-installer >/dev/null 2>&1; then
-    echo "Installing gnome-shell-extension-installer..."
-    sudo curl -o /usr/local/bin/gnome-shell-extension-installer \
-      https://raw.githubusercontent.com/brunelli/gnome-shell-extension-installer/master/gnome-shell-extension-installer && \
-      sudo chmod +x /usr/local/bin/gnome-shell-extension-installer
-fi
 
 # List of required extensions (UUIDs and names)
 EXTENSIONS=(
@@ -33,13 +21,16 @@ EXTENSIONS=(
 # Install and enable each extension
 for UUID in "${EXTENSIONS[@]}"; do
   echo "Installing $UUID..."
-  gnome-shell-extension-installer --yes "$UUID"
+  gext install "$UUID"
   gnome-extensions enable "$UUID" || true
 done
 
-echo "All GNOME Shell extensions installed and enabled."git clone https://github.com/vinceliuice/WhiteSur-gtk-theme
+echo "All GNOME Shell extensions installed and enabled."
+
+git clone https://github.com/vinceliuice/WhiteSur-gtk-theme
 git clone https://github.com/vinceliuice/WhiteSur-icon-theme
 git clone https://github.com/vinceliuice/WhiteSur-cursors
+
 ./WhiteSur-gtk-theme/install.sh
 ./WhiteSur-icon-theme/install.sh
 ./WhiteSur-gtk-theme/src/other/dash-to-dock/install.sh
