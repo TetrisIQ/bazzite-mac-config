@@ -8,7 +8,6 @@ export PIPX_STATE_HOME="${PIPX_STATE_HOME:-/root/.local/state/pipx}"
 mkdir -p "${PIPX_HOME}" "${PIPX_STATE_HOME}/log"
 
 pipx install gnome-extensions-cli 
-
 # --- GNOME Shell Extensions Installation ---
 echo "Installing GNOME Shell Extensions..."
 
@@ -18,7 +17,6 @@ EXTENSIONS=(
   "compiz-windows-effect@hermes83.github.com"           # Compiz Window Effect
   "dash-to-dock@micxgx.gmail.com"                      # Dash To Dock
   "dynamic-panel-transparency@rockon999.github.io"     # Dynamic Panel Transparency
-  "move-clock@rmy.pobox.com"                           # Frippery Move Clock
   "panel-osd@berend.de.schouwer.gmail.com"             # Panel OSD
   "trayIconsReloaded@selfmade.pl"                      # Tray Icons Reloaded
 )
@@ -26,8 +24,7 @@ EXTENSIONS=(
 # Install and enable each extension
 for UUID in "${EXTENSIONS[@]}"; do
   echo "Installing $UUID..."
-  gext install "$UUID"
-  gnome-extensions enable "$UUID" || true
+  /var/roothome/.local/bin/gext install "$UUID"
 done
 
 echo "All GNOME Shell extensions installed and enabled."
@@ -38,5 +35,7 @@ git clone https://github.com/vinceliuice/WhiteSur-cursors
 
 ./WhiteSur-gtk-theme/install.sh
 ./WhiteSur-icon-theme/install.sh
-./WhiteSur-gtk-theme/src/other/dash-to-dock/install.sh
 ./WhiteSur-cursors/install.sh
+
+# uninstall pipx dependency to avoid it being included in the final image
+pipx uninstall gnome-extensions-cli 
